@@ -32,3 +32,22 @@ def visualize_scaler(scaler, df, columns_to_scale, bins=10):
         ax2.hist(df_scaled[col], bins=bins)
         ax2.set(title=f'{col} after scaling with {scaler.__class__.__name__}', xlabel=col, ylabel='count')
     plt.tight_layout()
+    
+    
+def visualize_scaler_2(scaler, df, columns_to_scale, bins=10):
+    #create subplot structure
+    fig, axs = plt.subplots(len(columns_to_scale), 2, figsize=(12,12))
+
+    #copy the df for scaling
+    df_scaled = df.copy()
+    
+    #fit and transform the df
+    df_scaled[columns_to_scale] = scaler.fit_transform(df[columns_to_scale])
+
+    #plot the pre-scaled data next to the post-scaled data in one row of a subplot
+    for (ax1, ax2), col in zip(axs, columns_to_scale):
+        ax1.hist(df[col], bins=bins)
+        ax1.set(title=f'{col} before scaling', xlabel=col, ylabel='count')
+        ax2.hist(df_scaled[col], bins=bins)
+        ax2.set(title=f'{col} after scaling with {scaler.__class__.__name__}', xlabel=col, ylabel='count')
+    plt.tight_layout()
